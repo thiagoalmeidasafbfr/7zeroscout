@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background-color: #08100b;
+  color: #dee5e0;
+  min-height: 100%;
+}
+
+body {
+  font-feature-settings: "ss01", "cv11";
+}
+
+::selection {
+  background: #1f8a47;
+  color: #08100b;
+}
+
+.scrollbar-pitch::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.scrollbar-pitch::-webkit-scrollbar-thumb {
+  background: #1a2a20;
+  border-radius: 999px;
+}
+.scrollbar-pitch::-webkit-scrollbar-thumb:hover {
+  background: #243527;
+}
