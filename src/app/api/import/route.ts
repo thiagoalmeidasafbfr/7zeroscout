@@ -51,6 +51,13 @@ export async function POST(req: NextRequest) {
       const positions = Array.isArray(p.positions)
         ? p.positions.filter((x): x is string => typeof x === "string").filter(isValidPosition)
         : [];
+      const force =
+        typeof p.force === "number" &&
+        Number.isInteger(p.force) &&
+        p.force >= 1 &&
+        p.force <= 99
+          ? p.force
+          : null;
       return {
         squad_id: squadRow.id,
         player_id: p.playerId,
@@ -58,6 +65,7 @@ export async function POST(req: NextRequest) {
         positions,
         number: typeof p.number === "number" ? p.number : null,
         legend: Boolean(p.legend),
+        force,
       };
     });
 

@@ -51,6 +51,7 @@ export interface ImportPayload {
     positions: string[];
     number?: number | null;
     legend?: boolean;
+    force?: number | null;
     f?: unknown;
   }>;
 }
