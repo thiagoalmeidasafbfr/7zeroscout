@@ -27,19 +27,22 @@ export async function GET() {
   const checks: Record<string, { ok: boolean; detail?: string }> = {};
 
   if (url && anon) {
-    try {
-      const sb = createClient(url, anon, { auth: { persistSession: false } });
-      const { error, count } = await sb
-        .from("squads")
-        .select("*", { count: "exact", head: true });
-      checks.public_select_squads = error
-        ? { ok: false, detail: error.message }
-        : { ok: true, detail: `rows=${count ?? "?"}` };
-    } catch (err) {
-      checks.public_select_squads = { ok: false, detail: (err as Error).message };
+    const sb = createClient(url, anon, { auth: { persistSession: false } });
+    for (const table of ["squads", "players"] as const) {
+      try {
+        const { error, count } = await sb
+          .from(table)
+          .select("*", { count: "exact", head: true });
+        checks[`public_select_${table}`] = error
+          ? { ok: false, detail: error.message }
+          : { ok: true, detail: `rows=${count ?? "?"}` };
+      } catch (err) {
+        checks[`public_select_${table}`] = { ok: false, detail: (err as Error).message };
+      }
     }
   } else {
     checks.public_select_squads = { ok: false, detail: "skipped (url or anon key missing)" };
+    checks.public_select_players = { ok: false, detail: "skipped (url or anon key missing)" };
   }
 
   if (url && service) {
